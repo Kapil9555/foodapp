@@ -1,0 +1,78 @@
+import mongoose from "mongoose";
+
+const shopSchema = new mongoose.Schema({
+    shopName:{
+        type:String,
+        required:true
+    },
+    foodType:{
+        type:String,
+        required:true
+    },
+    image:{
+        type:String,
+        required:false,
+        default:"/uploads/apg.png"
+    },
+    ratings:{
+        type:Number,
+        required:false,
+        default:0
+    },
+    offerPercentage:{
+        type:Number,
+        required:true
+    },
+    foodForCost:{
+        type:Number,
+        required:true
+    },
+    foodForMany:{
+        type:Number,
+        required:true
+    },
+    deliverIn:{
+        type:Number,
+        required:true
+    },
+    mobOnShop:{
+        type:Number,
+        required:true
+    },
+    emailOnShop:{
+        type:String,
+        required:true
+    },
+    shopAddress:{
+        type:String,
+        required:true
+    },
+    wallet:{
+        type:Number,
+        required:false,
+        default:0
+    },
+    isShopBanned:{
+        type:Boolean,
+        required:false,
+        default:false
+    },
+    isShopOpen:{
+        type:Boolean,
+        required:false,
+        default:false
+    },
+    isPopular:{
+        type:Boolean,
+        required:false,
+        default:false
+    },
+    isTrending:{
+        type:Boolean,
+        required:false,
+        default:false
+    },
+},{timestamps:true});
+
+
+export default shopSchema;
