@@ -1,10 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
-import bakery from '../assests/bakery.png'
-import beve from '../assests/beverage.png'
 import burger1 from '../assests/burger0.png'
-import chicken from '../assests/chicken.png'
-import seafood from '../assests/seafood.png'
 import './master.css'
 
 const Filters = ({catData}) => {
@@ -17,7 +13,7 @@ const Filters = ({catData}) => {
                 {
                     catData.map((ele , index) => {
                         return (
-                            <Paper  key={index} sx={{zIndex:2,flex: '0 0 auto',mb:"10px",height:{lg:"100px",md:"100px",xs:"90px",xs:"80px"}, width:{lg:"100px",md:"100px",xs:"90px",xs:"80px"},mr:"13px", borderRadius: "13px",  overflow: "hidden", bgcolor: "white" }}>
+                            <Paper  key={index} sx={{zIndex:2,cursor:"pointer",flex: '0 0 auto',mb:"10px",height:{lg:"100px",md:"100px",xs:"90px",xs:"80px"}, width:{lg:"100px",md:"100px",xs:"90px",xs:"80px"},mr:"13px", borderRadius: "13px",  overflow: "hidden", bgcolor: "white" }}>
                                 <Box sx={{position:"relative",height:{lg:"70px",md:"70px",sm:"60px",xs:"60px"}}}>
                                 <Image alt='img' src={burger1} style={{ height:"100%", width: "100%" }} />
                                 </Box>

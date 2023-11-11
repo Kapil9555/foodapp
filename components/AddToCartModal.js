@@ -5,6 +5,7 @@ import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox
 import { Box, Button, IconButton, Modal, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
 import cardImg from '../assests/burger1.jpg';
+import axios from 'axios';
 
 
 const AddToCartModal = ({ modalData, setModalData }) => {
@@ -24,6 +25,28 @@ const handleQtyDec =()=>{
     
 }
 // console.log("qty data",{...modalData.data})
+
+const addToCarthandler =async()=>{
+    const dataToSend = {...modalData.data,uid:JSON.parse(localStorage.getItem('UID'))}
+    console.log("response data here",dataToSend);
+    try{
+       const respData= await axios.post('/api/cart',dataToSend)
+      
+       if(respData.data.message == "Item Added Successfully"){
+        alert(respData.data.message)
+        setModalData({ ...modalData, open: false })
+       }
+       else{
+        alert(respData.data.message)
+       }
+    }catch(err){
+       console.log(err);
+       alert(err)
+    }
+}
+
+
+
     return (
         <>
             <Modal open={modalData.open} onClose={handleClose} sx={{border:"none"}} disableAutoFocus>  
@@ -59,7 +82,7 @@ const handleQtyDec =()=>{
 
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: { lg: "15px", md: "15px", sm: "13px", xs: "8px" }, width: "100%" }}>
-                                    <Button variant='contained' fullWidth sx={{ bgcolor: "green", "&:hover": { bgcolor: "green" } }}>Add</Button>
+                                    <Button variant='contained' fullWidth disabled={modalData.data.qty < 1} sx={{ bgcolor: "green", "&:hover": { bgcolor: "green" } }} onClick={addToCarthandler}>Add</Button>
                                 </Box>
                             </Box>
                         </Box>

@@ -8,6 +8,7 @@ import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import cart from '../../../assests/cart.jpg'
 import Image from 'next/image';
+import add1 from '../../../assests/location.png'
 
 
 
@@ -38,15 +39,26 @@ const MenuPage = () => {
   },[]);
 
   const handleNavigateCart =()=>{
-     router.push('/checkout')
+    const id = JSON.parse(localStorage.getItem('UID'))
+     router.push(`/checkout/${id}`)
+  };
+
+  const handleNavigateAddress =()=>{
+    const id = JSON.parse(localStorage.getItem('UID'))
+     router.push(`/useraddress/${id}`)
   };
 
   return (
     <Container disableGutters maxWidth={'xl'} sx={{bgcolor:"#f5f5f5",p:{lg:"0px 20px",md:"0px 20px",sm:"0px 15px",xs:"0px 8px"}}}>
        <Box>
-          <Paper elevation={4} sx={{position:"fixed",zIndex:999,borderRadius:"50px",overflow:"hidden",bottom:"50px",right:"50px",cursor:"pointer"}} onClick={handleNavigateCart}>
-            <Box sx={{position:"relative",height:"80px",width:"80px"}}>
+          <Paper elevation={4} sx={{position:"fixed",zIndex:999,borderRadius:"50px",overflow:"hidden",bottom:"100px",right:"50px",cursor:"pointer"}} onClick={handleNavigateCart}>
+            <Box sx={{position:"relative",height:"60px",width:"60px"}}>
                 <Image src={cart} style={{height:"100%",width:"100%"}}/>
+            </Box>
+          </Paper>
+          <Paper elevation={4} sx={{position:"fixed",zIndex:999,borderRadius:"50px",overflow:"hidden",bottom:"30px",right:"50px",cursor:"pointer"}} onClick={handleNavigateAddress}>
+            <Box sx={{position:"relative",height:"60px",width:"60px"}}>
+                <Image src={add1} objectFit='cover' style={{height:"100%",width:"100%"}}/>
             </Box>
           </Paper>
        </Box>

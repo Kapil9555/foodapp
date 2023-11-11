@@ -54,7 +54,6 @@ const loginHandler =async()=>{
    
 
         if(respData.data.message =='Login Successfull'){
-            
             const respJson= JSON.stringify(respData.data.resp.uid);
             await  localStorage.setItem("UID",respJson)
             router.push('/')
