@@ -7,7 +7,12 @@ export const GET = async (req) => {
     try {
         await CONNECT_DATABASE();
         const data =await Shop.find();
-        return NextResponse.json({message:"All Data Fetched",resp:data},{status:200});
+        if(data.length > 0){
+            return NextResponse.json({message:"All Data Fetched",resp:data},{status:200});
+        }
+        if(data.length <0 ){
+            return NextResponse.json({message:"No Data Found"},{status:200});
+        }
 
     } catch (err) {
         console.log(err);

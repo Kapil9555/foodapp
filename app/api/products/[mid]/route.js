@@ -8,7 +8,13 @@ export const GET =async(req,{params})=>{
      try{
        const catData= await Categorie.find({mid:params.mid})
        const itemData= await Item.find({mid:params.mid})
-       return NextResponse.json({message:"Fetched Successfully",catData:catData,itemData:itemData},{status:200})
+
+       if(itemData.length == 0){
+        return NextResponse.json({message:"No Data Found"},{status:200})
+       }
+       if(itemData.length !=0){
+         return NextResponse.json({message:"Fetched Successfully",catData:catData,itemData:itemData},{status:200})
+       }
      }catch(err)
      {
         console.log(err)

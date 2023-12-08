@@ -26,73 +26,68 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 
 
- const SignUp =()=> {
+
+const SignUp = () => {
   const router = useRouter();
-  const [checker ,setChecker]=useState(true);
-  const [registerData, setRegisterData]=useState({
-    fullName:"",
-    email:"",
-    mobile:"",
-    password:""
+  const [checker, setChecker] = useState(true);
+  const [registerData, setRegisterData] = useState({
+    fullName: "",
+    email: "",
+    mobile: "",
+    password: ""
   });
 
-  const handleCollect =(e)=>{
-    const {name , value}=e.target;
+  const handleCollect = (e) => {
+    const { name, value } = e.target;
 
-    if(name=='mobile' && value.length >10){
-        // alert("Mobile Number Not More Then 10 digits")
+    if (name == 'mobile' && value.length > 10) {
+      // alert("Mobile Number Not More Then 10 digits")
     }
-    else{
-        setRegisterData({...registerData,[name]:value});
+    else {
+      setRegisterData({ ...registerData, [name]: value });
     };
   };
 
-  useEffect(()=>{
-    if(registerData.fullName && registerData.email && (registerData.mobile.length <11 && registerData.mobile.length >9 ) && registerData.password.length>7){
-        setChecker(false)
-    }else{
-        setChecker(true)
+  useEffect(() => {
+    if (registerData.fullName && registerData.email && (registerData.mobile.length < 11 && registerData.mobile.length > 9) && registerData.password.length > 7) {
+      setChecker(false)
+    } else {
+      setChecker(true)
     }
-  },[registerData]);
+  }, [registerData]);
 
-const handleSubmit = async()=>{
-   console.log(registerData);
-   try{
-       const respData =await axios.post('/api/user',registerData);
-       console.log(respData);
-       if(respData.data.message =="This Mobile No. is Already Registered"){
-         alert(respData.data.message);
-       };
-       if(respData.data.message == 'User Registered Successfully'){
-          router.push('/userlogin');
-       };
-   }catch(err){
-    console.log(err);
-    alert(err.message);
-   }
-};
+  const handleSubmit = async () => {
+    console.log(registerData);
+    try {
+      const respData = await axios.post('/api/user', registerData);
+      console.log(respData);
+      if (respData.data.message == "This Mobile No. is Already Registered") {
+        alert(respData.data.message);
+      };
+      if (respData.data.message == 'User Registered Successfully') {
+        router.push('/userlogin');
+      };
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    }
+  };
 
   return (
-       <>
-       <Box sx={{p:"15px",backgroundColor:"#37474f",position:'sticky',top:'0px'}}>
-          <Typography align='center' sx={{color:"white",fontSize:"25px",fontWeight:700}}>
-            Registration Form
-          </Typography>
-       </Box>
-        <Container component="main" maxWidth="xs">
+    <>
+      <Box sx={{ p: "15px", backgroundColor: "#37474f", position: 'sticky', top: '0px' }}>
+        <Typography align='center' sx={{ color: "white", fontSize: "25px", fontWeight: 700 }}>
+          Registration Form
+        </Typography>
+      </Box>
+      <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 6,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-           
-            borderRadius:"5px",
-            p:"5px"
+            marginTop: 6, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px",
+            p: "5px"
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -101,86 +96,38 @@ const handleSubmit = async()=>{
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box  sx={{ mt: 3 }}>
+          <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  required
-                  fullWidth
-                  id="fullname"
-                  label="Full Name"
-                  autoFocus
-                  value={registerData.fullName}
-                  onChange={handleCollect}
-                />
-              </Grid>
-          
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="mobile"
-                  label="Mobile"
-                  name="mobile"
-                  type='number'
-                  autoComplete="mobile"
-                  value={registerData.mobile}
-                  onChange={handleCollect}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={registerData.email}
-                  onChange={handleCollect}
-                />
-              </Grid>
-             
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={registerData.password}
-                  onChange={handleCollect}
+                <TextField autoComplete="given-name" name="fullName" required fullWidth id="fullname" label="Full Name" autoFocus value={registerData.fullName} onChange={handleCollect}
                 />
               </Grid>
 
               <Grid item xs={12}>
-              <Typography align='center' sx={{fontSize:"15px"}}>Image</Typography>
-                 <Box sx={{ height: "30px", width: "100%" }}>
-                                     <Typography align='center' sx={{ position: "relative", top: "0px", mt: "4px", border: "1px solid gray" }}>
-                                        <input type='file' style={{ zIndex: 99, opacity: 0, position: "absolute", left: "0px", top: "0px", height: "30px", width: "100%" }}   />
-                                         Choose Image
-                                    </Typography>
-                                 </Box>
-              </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                <TextField required fullWidth id="mobile" label="Mobile" name="mobile" type='number' autoComplete="mobile" value={registerData.mobile} onChange={handleCollect}
                 />
-              </Grid> */}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" value={registerData.email} onChange={handleCollect}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" value={registerData.password} onChange={handleCollect}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography align='center' sx={{ fontSize: "15px" }}>Image</Typography>
+                <Box sx={{ height: "30px", width: "100%" }}>
+                  <Typography align='center' sx={{ position: "relative", top: "0px", mt: "4px", border: "1px solid gray" }}>
+                    <input type='file' style={{ zIndex: 99, opacity: 0, position: "absolute", left: "0px", top: "0px", height: "30px", width: "100%" }} />
+                    Choose Image
+                  </Typography>
+                </Box>
+              </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={checker}
-              onClick={handleSubmit}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={checker} onClick={handleSubmit}>
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
@@ -194,8 +141,8 @@ const handleSubmit = async()=>{
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-       </>
-    
+    </>
+
   );
 };
 

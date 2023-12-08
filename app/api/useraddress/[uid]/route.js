@@ -5,13 +5,14 @@ import { NextResponse } from "next/server";
 export const GET =async(req,{params})=>{
    await CONNECT_DATABASE();
    try{
-       console.log("uid",params.uid);
+       // console.log("uid",params.uid);
        const resp = await Address.find({uid:params.uid});
-       if(resp){
-        return NextResponse.json({message:"Data Fetched Successfully",resp:resp},{status:200});
-       }
-       if(!resp){
-        return NextResponse.json({message:"Failed to Fetched Succesfully"},{status:403});
+        console.log("response length",resp)
+       if(resp.length > 0){
+        return NextResponse.json({message:"Fetched Successfully",resp:resp},{status:200});
+        }
+       if(resp.length == 0){
+         return NextResponse.json({message:"No Data found"},{status:200});
        }
    }catch(err){
     // console.log(err);

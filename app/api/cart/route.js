@@ -6,13 +6,13 @@ export const POST = async (req)=>{
    await CONNECT_DATABASE();
    try{
       const body =await req.json();
-        console.log("body data here",body)
+        // console.log("body data here",body)
         const {_id,...other} = body;
-        console.log('Other',other);
+        // console.log('Other',other);
       const toSave = await Cart(other);
-         console.log("to save here",toSave);
+        //  console.log("to save here",toSave);
       const saved = await toSave.save();
-      console.log("saved here",saved)
+      // console.log("saved here",saved)
       if(saved){
         return NextResponse.json({message:"Item Added Successfully",resp:saved},{status:200});
       }

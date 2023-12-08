@@ -6,7 +6,7 @@ export const POST =async(req)=>{
  await CONNECT_DATABASE();
  try{
    const body = await req.json();
-   console.log("verify user",body);
+   // console.log("verify user",body);
    const isUserExist = await User.findOne({mobile:body.mobile});
    console.log(isUserExist);
    if(isUserExist){
@@ -16,8 +16,8 @@ export const POST =async(req)=>{
      if(isUserExist.password != body.password){
         return NextResponse.json({message:"Invalid Password"},{status:200});
      }
-   };
-   if(!isUserExist){
+   }
+   else{
       return NextResponse.json({message:"This Mobile No. is Not Registered With Us"},{status:200});
    };
  }catch(err){

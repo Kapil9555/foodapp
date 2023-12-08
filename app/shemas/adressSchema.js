@@ -22,9 +22,13 @@ const addressSchema =new mongoose.Schema({
         required:true
     },
     pinCode:{
-       type:String,
+       type:Number,
        required:true
     },
+    mobile:{
+        type:Number,
+        required:true
+     },
     uid:{
        type:String,
        required:true
@@ -32,7 +36,7 @@ const addressSchema =new mongoose.Schema({
     defaultAddress:{
         type:String,
         required:false,
-        default:false
+        default:'xyz'
     }
 },{timestamps:true});
 

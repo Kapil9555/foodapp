@@ -2,21 +2,20 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { Box, Button, IconButton, Modal, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, IconButton, Modal, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
 import cardImg from '../assests/burger1.jpg';
 import axios from 'axios';
+import { useState } from 'react';
 
 
-const AddToCartModal = ({ modalData, setModalData }) => {
+const AddToCartModal = ({ modalData, setModalData,open,setOpen,fetchCartData }) => {
+       const [btnLoader , setBtnLoader] = useState(false)
 
-const handleClose = () => {
-        setModalData({ ...modalData, open: false })
-    };
 
-const handleQtyInc =()=>{
-        setModalData({...modalData,data:{...modalData.data,qty:modalData.data.qty+1}})
-}
+const handleClose = () => {setModalData({ ...modalData, open: false })};
+
+const handleQtyInc =()=>{setModalData({...modalData,data:{...modalData.data,qty:modalData.data.qty+1}})}
 
 const handleQtyDec =()=>{
     if(modalData.data.qty >0){
@@ -27,17 +26,21 @@ const handleQtyDec =()=>{
 // console.log("qty data",{...modalData.data})
 
 const addToCarthandler =async()=>{
+    setBtnLoader(true)
     const dataToSend = {...modalData.data,uid:JSON.parse(localStorage.getItem('UID'))}
     console.log("response data here",dataToSend);
     try{
        const respData= await axios.post('/api/cart',dataToSend)
       
        if(respData.data.message == "Item Added Successfully"){
-        alert(respData.data.message)
-        setModalData({ ...modalData, open: false })
+          setOpen(true)
+         setModalData({ ...modalData, open: false })
+         fetchCartData()
+         setBtnLoader(false)
        }
        else{
         alert(respData.data.message)
+        setBtnLoader(false)
        }
     }catch(err){
        console.log(err);
@@ -81,8 +84,14 @@ const addToCarthandler =async()=>{
                                     </Box>
 
                                 </Box>
+
                                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: { lg: "15px", md: "15px", sm: "13px", xs: "8px" }, width: "100%" }}>
-                                    <Button variant='contained' fullWidth disabled={modalData.data.qty < 1} sx={{ bgcolor: "green", "&:hover": { bgcolor: "green" } }} onClick={addToCarthandler}>Add</Button>
+                                    {
+                                        btnLoader ?
+                                     <CircularProgress color="inherit" size={25} /> 
+                                     :
+                                    <Button variant='contained' fullWidth disabled={modalData.data.qty < 1} sx={{ bgcolor: "green", "&:hover": { bgcolor: "green" } }} onClick={addToCarthandler}> Add</Button>
+                                    }
                                 </Box>
                             </Box>
                         </Box>

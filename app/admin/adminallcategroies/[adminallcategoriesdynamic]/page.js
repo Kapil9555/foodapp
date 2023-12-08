@@ -1,6 +1,5 @@
 'use client'
 import AdminAddNewCatModal from '@/components/AdminAddNewCatModal'
-import { CleaningServices } from '@mui/icons-material'
 import { Box, Button, Checkbox, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
@@ -105,7 +104,7 @@ const AdminAllCategories = () => {
                                     catData.map((ele, index) => {
                                         return (
                                             <TableRow key={index}>
-                                                <TableCell align='center' sx={{ cursor: "pointer" }}>{index}</TableCell>
+                                                <TableCell align='center' sx={{ cursor: "pointer" }}>{index+1}</TableCell>
                                                 <TableCell align='center' sx={{ cursor: "pointer" }} onClick={() => { handleNavigateCat(ele.mid, ele._id) }}>
                                                     {ele.name}
                                                 </TableCell>

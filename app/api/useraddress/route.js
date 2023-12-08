@@ -7,7 +7,7 @@ export const POST =async(req)=>{
     
    try{
      const body = await req.json();
-    //  console.log("body data",body)  
+     console.log("body data",body)  
    
       const toSave =await Address(body);
       // console.log("toSave",toSave)

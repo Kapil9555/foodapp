@@ -50,7 +50,7 @@ const loginHandler =async()=>{
     try{
       if(loginData.mobile.length == 10 && loginData.password){
         const respData =await axios.post('/api/verifyuser',loginData);
-        console.log("response",respData.data.resp.uid);
+        // console.log("response",respData.data.resp.uid);
    
 
         if(respData.data.message =='Login Successfull'){
@@ -59,6 +59,7 @@ const loginHandler =async()=>{
             router.push('/')
         }
         else{
+            console.log("response data login",respData.data.message)
             alert(respData.data.message)
         };
       }
