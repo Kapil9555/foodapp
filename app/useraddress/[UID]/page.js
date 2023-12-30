@@ -63,7 +63,7 @@ const UserAddress = () => {
 
     const addressDeleteHandler = async (id) => {
         setCustomSnack({ ...customSnack, deleteLoader: id })
-        console.log(customSnack)
+        // console.log(customSnack)
         try {
             const respData = await axios.delete(`/api/removeuseraddress/${id}`)
             if (respData.data.message == "Address Removed Successfully") {
@@ -170,13 +170,20 @@ const UserAddress = () => {
                                                         </RadioGroup>
                                                     </FormControl>
                                                 </Grid>
-                                                
-                                                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',p:"10px" }}>
-                                                        <Button variant='contained' onClick={() => { setOpen(true) }}>Add New Address</Button>
-                                                        <AddNewAddress open={open} setOpen={setOpen} fetchData={fetchData} customSnack={customSnack} setCustomSnack={setCustomSnack} />
-                                                    </Grid>
-                                                </Grid>
+
+                                            </Grid>
                                     }
+                                </Grid>
+
+                                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: "10px" }}>
+                                    {
+                                        showData.length == 0 && !checker
+                                            ?
+                                            <Skeleton variant='rectangular' sx={{height:"40px",width:"30%"}}/>
+                                            :
+                                      <Button variant='contained' onClick={() => { setOpen(true) }}>Add New Address</Button>
+                                  }
+                                    <AddNewAddress open={open} setOpen={setOpen} fetchData={fetchData} customSnack={customSnack} setCustomSnack={setCustomSnack} />
                                 </Grid>
 
 
@@ -196,6 +203,7 @@ const UserAddress = () => {
             }
 
             <SnackBarCustom customSnack={customSnack} setCustomSnack={setCustomSnack} />
+            <SnackBarCustomError customSnack={customSnack} setCustomSnack={setCustomSnack} />
         </>
     )
 }

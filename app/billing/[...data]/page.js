@@ -1,6 +1,6 @@
 'use client'
 import Header from '@/components/Header';
-import { Alert, Box, Button, CircularProgress, Container, Divider, Fab, FormControl, Grid, MenuItem, OutlinedInput, Paper, Select, Skeleton, Snackbar, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Container, Divider, Fab, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Paper, Select, Skeleton, Snackbar, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -18,16 +18,14 @@ const Billing = () => {
   const [checker, setChecker] = useState(false)
   const [paymentMode, setPaymentMode] = useState({ value: "", online: false, verified: false, upiId: "", textChange: false })
   const [btnShow, setBtnShow] = useState({ disabled: true, loader: false })
-  const subTotal = items.reduce((acc, crr) => {
-    return acc + (crr.srp * crr.qty)
-  }, 0);
+  const subTotal = items.reduce((acc, crr) =>{ return acc + (crr.srp * crr.qty)}, 0);
   const delChrg = 40;
   const tax = 20;
   const dis = 10;
   const toPay = (subTotal + delChrg + tax) - dis
 
 
-  // console.log("params",param.data[0])
+  // console.log("params",subTotal)
 
 
   const fetchCartApi = async () => {
@@ -101,7 +99,7 @@ const Billing = () => {
       setPaymentMode({ ...paymentMode, value: value, online: true })
     }
     if (value == 'cod') {
-      setPaymentMode({ ...paymentMode, value: value, online: false, verified: false })
+      setPaymentMode({ ...paymentMode, value: value, online: false, verified: false,textChange:false })
       setBtnShow({ ...btnShow, disabled: false })
     }
     else{
@@ -110,23 +108,16 @@ const Billing = () => {
     }
   }
 
-  const handleCollect = (e) => {setPaymentMode({ ...paymentMode, upiId: e.target.value })}
+    const handleCollect = (e) => { 
+      // console.log("value",e.target.value)
+      setPaymentMode({ ...paymentMode, upiId: e.target.value,textChange:false })
+      setBtnShow({ ...btnShow, disabled: true })
+    }
 
 
   const handleVerify = () => { 
     // const count = paymentMode.upiId.split('@').length-1
-    let count = 0
-    for(let x of paymentMode.upiId){
-      console.log("string",x)
-      if( x == '@' ){
-        count= count+1
-      }
-      if(count > 1){
-        break ;
-      }
-     
-    }
-    
+    const count = (paymentMode.upiId.match(/@/g) || []).length 
     if ((count==1 && paymentMode.upiId.indexOf('@') != 0) && (paymentMode.upiId.indexOf('@')+1 !=paymentMode.upiId.length) ) {
       setPaymentMode({ ...paymentMode, verified: true, textChange: true })
       setBtnShow({ ...btnShow, disabled: false })
@@ -136,18 +127,7 @@ const Billing = () => {
     }
   };
 
-  // useEffect(()=>{
-  //   let str = 'kapil@kd@sf@sd';
-  //   let count = 0
-  //   for(let x of str){
-  //     if( x == '@'){
-  //       count= count+1
-  //     }
-  //   }
-  //   console.log(count)
-  // },[])
-
-
+  console.log("values",paymentMode)
 
   return (
     <>
@@ -176,14 +156,16 @@ const Billing = () => {
               :
               <Grid item lg={4} md={6} sm={8} xs={11} >
 
-              {/* this grid conatainer giving error on build time */}
                 <Grid container >
                   <Grid item xs={12}>
                     <Typography align='center' sx={{ fontSize: "20px", fontWeight: "800" }}>Payment Method </Typography>
                   </Grid>
                   <Grid item xs={12} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+
+                 {/* this formcontrol giving error on build time */}
                     <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                      <Select value={paymentMode.value} onChange={handleSelect} input={<OutlinedInput sx={{ height: "40px" }} />}>
+                      <Select  value={paymentMode.value} onChange={handleSelect}  displayEmpty inputProps={{ 'aria-label': 'Without label' }} input={<OutlinedInput sx={{ height: "40px" }} />}>
+                      <MenuItem value="" disabled={true}> <em>Select Payment Method</em> </MenuItem>
                         <MenuItem value='cod'>COD</MenuItem>
                         <MenuItem value='online'>Onine</MenuItem>
                       </Select>
@@ -195,7 +177,7 @@ const Billing = () => {
                           <OutlinedInput placeholder='Enter UPI ID' fullWidth sx={{ height: "40px" }} onChange={handleCollect} />
                           <Button variant='contained' size='small' disabled={paymentMode.upiId == ''} sx={{ p: "2px 4px 2px 4px", ml: "5px" }} onClick={handleVerify}>Verify</Button>
                         </Box>
-                        {paymentMode.textChange && <Typography align='center' sx={{ mt: "5px", color: paymentMode.verified ? "green" : "red" }}>{paymentMode.verified ? 'Verified' : 'Not Verified'}</Typography>}
+                        {(paymentMode.textChange && paymentMode.upiId) && <Typography align='center' sx={{ mt: "5px", color: paymentMode.verified ? "green" : "red" }}>{paymentMode.verified ? 'Verified' : 'Not Verified'}</Typography>}
                       </Box>
                     }
 
@@ -206,8 +188,11 @@ const Billing = () => {
                     <Grid container>
                       <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px' }}>
                         <Grid item xs={6}>
+                        {items.length > 0 ? 
                           <Typography sx={{ fontSize: { lg: '17px', md: '17px', sm: '15px', xs: '15px' }, fontWeight: 'bold', }}>Item SubTotal</Typography>
-
+                          :
+                            <Skeleton variant='text' sx={{ width: "100%" }} />
+                          }
                         </Grid>
                         <Grid item xs={2} >
                           {items.length > 0 ? <Typography sx={{ fontSize: { lg: '17px', md: '17px', sm: '15px', xs: '15px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{subTotal} Rs</Typography>
@@ -219,52 +204,60 @@ const Billing = () => {
                       <Divider sx={{ width: '100%', bgcolor: 'lightgrey', mt: '4px' }} />
 
                       <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px' }}>
+                      {items.length > 0 ? <>
                         <Grid item xs={6}>
                           <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', }}>Delivery Charges</Typography>
 
                         </Grid>
                         <Grid item xs={2} >
 
-                          {items.length > 0 ? <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{delChrg} Rs</Typography>
-                            :
-                            <Skeleton variant='text' sx={{ width: "40%" }} />
-                          }
+                         <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{delChrg} Rs</Typography>
                         </Grid>
+                      </>
+                            :
+                            <Skeleton variant='text' sx={{ width: "100%" }} />
+                          }
                       </Grid>
                       <Divider sx={{ width: '100%', bgcolor: 'lightgrey', mt: '4px' }} />
 
                       <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px' }}>
+                      {items.length > 0 ? <>
                         <Grid item xs={6}>
                           <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', }}>Tax (9%)</Typography>
 
                         </Grid>
                         <Grid item xs={2} >
-                          {items.length > 0 ? <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{tax} Rs</Typography>
-                            :
-                            <Skeleton variant='text' sx={{ width: "40%" }} />
-                          }
+                          <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{tax} Rs</Typography>
                         </Grid>
+                         </>
+                            :
+                            <Skeleton variant='text' sx={{ width: "100%" }} />
+                          }
                       </Grid>
                       <Divider sx={{ width: '100%', bgcolor: 'lightgrey', mt: '4px' }} />
 
                       <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px' }}>
+                      {items.length > 0 ? <>
                         <Grid item xs={6}>
                           <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', }}>Discount</Typography>
 
                         </Grid>
                         <Grid item xs={2} >
-                          {items.length > 0 ? <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{dis} Rs</Typography>
-                            :
-                            <Skeleton variant='text' sx={{ width: "40%" }} />
-                          }
+                          <Typography sx={{ fontSize: { lg: '15px', mr: '15px', sm: '13px', xs: '13px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{dis} Rs</Typography>
                         </Grid>
+                        </>
+                            :
+                            <Skeleton variant='text' sx={{ width: "100%" }} />
+                          }
                       </Grid>
                       <Divider sx={{ width: '100%', bgcolor: 'lightgrey', mt: '4px' }} />
 
                       <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '10px', bgcolor: '#eeeeee', borderRadius: '0px 0px 11px 11px' }}>
                         <Grid item xs={6}>
-                          <Typography sx={{ color: "black", fontSize: { lg: '20px', md: '20px', sm: '18px', xs: '15px' }, fontWeight: 'bold' }}>To Pay</Typography>
-
+                         {items.length > 0 ? <Typography sx={{ color: "black", fontSize: { lg: '20px', md: '20px', sm: '18px', xs: '15px' }, fontWeight: 'bold' }}>To Pay</Typography>
+                            :
+                            <Skeleton variant='text' sx={{ width: "40%" }} />
+                          }
                         </Grid>
                         <Grid item xs={2} >
                           {items.length > 0 ? <Typography sx={{ fontSize: { lg: '19px', md: '18px', sm: '16px', xs: '15px' }, fontWeight: 'bold', color: '#616161', textAlign: 'center' }}>{toPay} Rs</Typography>

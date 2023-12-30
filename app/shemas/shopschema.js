@@ -11,8 +11,7 @@ const shopSchema = new mongoose.Schema({
     },
     image:{
         type:String,
-        required:false,
-        default:"/uploads/apg.png"
+        required:true,
     },
     ratings:{
         type:Number,

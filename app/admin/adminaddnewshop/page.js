@@ -17,15 +17,19 @@ const AdminAddNewShop = () => {
     deliverIn:"",
     mobOnShop:"",
     emailOnShop:"",
-    shopAddress:""
+    shopAddress:"",
+    image:""
 
    })
 
-   const [age, setAge] = useState('');
 
     const handleCollect = (event) => {
-        const {name,value}=event.target;
-        setShopData({...shopData,[name]:value})
+        const {name,value,files}=event.target;
+        if(name =='image'){
+            setShopData({...shopData,[name]:files[0]})
+        }else{
+            setShopData({...shopData,[name]:value})
+        }
     };
     // console.log(shopData)
 
@@ -34,8 +38,21 @@ const AdminAddNewShop = () => {
 
         if( shopData.shopName && shopData.foodType && shopData.offerPercentage && shopData.foodForCost && shopData.foodForMany && shopData.deliverIn && shopData.mobOnShop && shopData.emailOnShop && shopData.shopAddress ){
         try{
-            const dataResp= await axios.post('/api/shop',shopData);
-            console.log(dataResp);
+            const formData = new FormData();
+            formData.append('shopName',shopData.shopName)
+            formData.append('deliverIn',shopData.deliverIn)
+            formData.append('emailOnShop',shopData.emailOnShop)
+            formData.append('foodForCost',shopData.foodForCost)
+            formData.append('foodForMany',shopData.foodForMany)
+            formData.append('foodType',shopData.foodType)
+            formData.append('image',shopData.image)
+            formData.append('mobOnShop',shopData.mobOnShop)
+            formData.append('offerPercentage',shopData.offerPercentage)
+            formData.append('shopAddress',shopData.shopAddress)
+           
+
+            const dataResp= await axios.post('/api/shop',formData);
+            // console.log(dataResp);
             if(dataResp.data.message=="Shop Created Successfully"){
                 alert(dataResp.data.message);
             };
@@ -50,6 +67,8 @@ const AdminAddNewShop = () => {
         alert('please enter the details carefully')
     }
     }
+
+//  console.log("info",shopData)
 
     return (
         
@@ -101,7 +120,7 @@ const AdminAddNewShop = () => {
                             <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
                                 <Box sx={{ height: "30px", width: "100%" }}>
                                     <Typography align='center' sx={{ position: "relative", top: "0px", mt: "4px", border: "1px solid gray" }}>
-                                        <input type='file' style={{ zIndex: 99, opacity: 0, position: "absolute", left: "0px", top: "0px", height: "30px", width: "100%" }}   />
+                                        <input type='file' name='image'  style={{ zIndex: 99, opacity: 0, position: "absolute", left: "0px", top: "0px", height: "30px", width: "100%" }}    onChange={handleCollect}/>
                                         Choose Image
                                     </Typography>
                                 </Box>
@@ -131,10 +150,6 @@ const AdminAddNewShop = () => {
                             <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
                                 <OutlinedInput type='number' sx={{ height: "30px", width: "100%" }}   name="foodForMany" value={shopData.foodForMany} onChange={handleCollect}/>
                             </Grid>
-
-
-
-                           
 
 
                             {/* deliver in */}

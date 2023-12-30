@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema({
-     name:{
+    name:{
         type:String,
         required:true
     },
     image:{
         type:String,
-        required:false,
-        default:'/uploads/abc.png'
+        required:true,
     },
     isAvailable:{
         type:Boolean,

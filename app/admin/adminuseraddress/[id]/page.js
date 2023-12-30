@@ -1,6 +1,7 @@
 'use client'
 import SnackBarCustom from '@/components/SnackBarCustom'
 import SnackBarCustomError from '@/components/SnackBarCustomError'
+import TableSkeleton from '@/components/TableSkeleton'
 import { Box, Container, Grid, Paper, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
@@ -11,6 +12,7 @@ const AdminAllItems = () => {
     const params = useParams()
     const [userAddress, setUserAddress] = useState([])
     const [isShow , setIsShow] = useState(false)
+    const tableHead = ['S.N','Receiver Name','Address',' Land Mark','PinCode','Country']
     
     
 
@@ -66,38 +68,22 @@ const AdminAllItems = () => {
                  </Box>
                  :
                  userAddress.length == 0 ?
-                    <Box sx={{p:"10px"}}>
-                       {
-                        new Array(5).fill(1).map(()=>{
-                            return <Skeleton sx={{height:"80px"}}/>
-                              
-                        })
-                       }
-                     
+                    <Box>
+                       <TableSkeleton tableHead={tableHead}/>
                     </Box>
                     :
                  <Table container={"true"} component={Paper}>
                     <Table aria-label="sticky table">
                         <TableHead  >
                             <TableRow sx={{ backgroundColor: "black" }}>
-                                <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                    S.N
+                            {
+                                tableHead.map((ele)=>{
+                                    return  <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
+                                    {ele}
                                 </TableCell>
-                                <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                    Receiver Name
-                                </TableCell>
-                                <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                    Address
-                                </TableCell>
-                                <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                    Land Mark
-                                </TableCell>
-                                <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                    PinCode
-                                </TableCell>
-                                <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                    Country
-                                </TableCell>
+                                })
+                            }
+                               
                             </TableRow>
                         </TableHead>
                         <TableBody>

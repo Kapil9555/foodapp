@@ -6,9 +6,10 @@ import { Box, Button, Checkbox, CircularProgress, FormControlLabel, FormGroup, G
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import nodata from '../../../assests/nodata.gif'
+import nodata from '../../../assests/nodata2.gif'
 import Image from 'next/image'
 import SnackBarCustomError from '@/components/SnackBarCustomError'
+import TableSkeleton from '@/components/TableSkeleton'
 
 
 
@@ -23,7 +24,7 @@ const AdminAllUsers = () => {
     const [editUserOpen, setEditUserOpen] = useState({details:{},open:false})
     const [customSnack,setCustomSnack]=useState({open:false,message:""})
     const [errorSnack, setErrorSnack] = useState({open:false,message:""})
-  
+    const tableHead = ['S.N','User Name','IsActive','Email','Mobile','Action']
 
 
 
@@ -42,7 +43,7 @@ const AdminAllUsers = () => {
                 setUserData(responseData.data.resp);
                 setNoData(false)
             }
-            if(respData.data.message == 'No Data Found'){
+            if(responseData.data.message == 'No Data Found'){
                 setNoData(true)
                
             }
@@ -58,22 +59,25 @@ const AdminAllUsers = () => {
         const responseData= await axios.delete(`/api/deleteuser/${id}`);
         // console.log("server response here",responseData);
         if(responseData.data.message == "User Deleted Successfully"){
-            alert(responseData.data.message);
+            // alert(responseData.data.message);
             fetchData();
+            setCustomSnack({...customSnack,open:true,message:responseData.data.message})
         }
        }catch(err){
         console.log("error message",err)
-        alert(err)
+        alert(err.message)
        }
     };
 
     
     const handleIsActive =async(e,id)=>{
+
         const isActive = e.target.checked
-       setCheckBox(id)
+        setCheckBox(id)
+
        try{
           const respData = await axios.patch(`/api/userisactivecontrol/${id}`,{isActive})
-        //   console.log("checkox response",respData)
+          //console.log("checkox response",respData)
           if(respData.data.message == "Updated Successfully"){
              fetchData();
              setCheckBox("")
@@ -131,7 +135,7 @@ const AdminAllUsers = () => {
                     noData ?
                     <Grid container sx={{}}>
                 <Grid item xs={12} sx={{ height: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                  <Box sx={{ position: "relative", height: "200px", width: "200px" }}>
+                  <Box sx={{ position: "relative", height: "200px", width: "300px" }}>
                     <Image src={nodata} alt='no data' style={{ height: "100%", width: "100%", position: "absolute" }} />
                   </Box>
                   
@@ -139,17 +143,7 @@ const AdminAllUsers = () => {
               </Grid>
               :
               userData.length == 0 ?
-                    <Box sx={{p:"10px"}}>
-                    {
-                        new Array(5).fill(1).map(()=>{
-                            return <Skeleton sx={{height:"80px"}}/>
-                              
-                        })
-                       }
-                     
-                    </Box>
-                 
-                    
+                 <TableSkeleton tableHead={tableHead}/> 
                     :
                     <Table container={"true"} component={Paper}>
                         <Table aria-label="sticky table">
@@ -183,7 +177,7 @@ const AdminAllUsers = () => {
                                         return (
                                             <TableRow key={index} >
                                                 <TableCell align='center' sx={{ cursor: "pointer" }}>{index+1}</TableCell>
-                                                <TableCell align='center' sx={{ cursor: "pointer" }} onClick={() => { handleNavigateCat(ele._id) }}>
+                                                <TableCell align='center' sx={{ cursor: "pointer" }} onClick={() => {handleNavigateCat(ele._id) }}>
                                                     {ele.fullName}
                                                 </TableCell>
                                                 
@@ -192,7 +186,7 @@ const AdminAllUsers = () => {
                                                     checkBox == ele._id 
                                                     ? 
                                                    
-                                                     <CircularProgress color="inherit"  size="2.27rem"/>
+                                                    <CircularProgress color="inherit"  size="2.63rem"/>
                                                     
                                                    
                                                     :

@@ -1,9 +1,13 @@
 .blink {
-  animation: blinker 1.5s step-start infinite;
+  /* width: 50%; */
+  animation: blinker 15s infinite;
 }
 
 @keyframes blinker {
+  0%, 100% {
+    width: 0%;
+  }
   50% {
-    opacity: 0;
+    width: 10%;
   }
 }

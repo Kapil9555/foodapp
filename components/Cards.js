@@ -11,6 +11,8 @@ import AddIcon from '@mui/icons-material/Add';
 import AddToCartModal from './AddToCartModal';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SnackBarCustom from './SnackBarCustom';
+import SnackBarCustomError from './SnackBarCustomError';
 
 
 
@@ -20,10 +22,9 @@ const Cards = ({ productData,fetchCartData}) => {
   const router = useRouter();
 
   const [open, setOpen] = useState(false)
-  const [modalData, setModalData] = useState({
-    open: false,
-    data: {}
-  })
+  const [modalData, setModalData] = useState({open: false,data: {}})
+  const [customSnack,setCustomSnack]=useState({open:false,message:""})
+  const [errorSnack, setErrorSnack] = useState({open:false,message:""})
   const arr = new Array(10).fill(1)
 
 
@@ -128,7 +129,7 @@ const Cards = ({ productData,fetchCartData}) => {
                           <Icon sx={{ height: "40px", width: "40px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "13px", bgcolor: "#ffb300", "&:hover": { bgcolor: "#ffb300" } }} onClick={() => { handleAddToCartModal(ele) }}>
                             <AddIcon sx={{ color: "white" }} />
                           </Icon>
-                          <AddToCartModal modalData={modalData} setModalData={setModalData} open={open} setOpen={setOpen} fetchCartData={fetchCartData}/>
+                          <AddToCartModal modalData={modalData} setModalData={setModalData} open={open} setOpen={setOpen} fetchCartData={fetchCartData}  setCustomSnack={setCustomSnack}  setErrorSnack={setErrorSnack}/>
                         </Box>
                       </Box>
 
@@ -137,15 +138,10 @@ const Cards = ({ productData,fetchCartData}) => {
                 )
               })
             }
-
           </Grid>
-      }
-
-      <Snackbar open={open} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} sx={{ width: '100%', bgcolor: "#2e7d32", color: "white" }}>
-          Item Added Successfully
-        </Alert>
-      </Snackbar>
+          }
+            <SnackBarCustom customSnack={customSnack} setCustomSnack={setCustomSnack}/>
+            <SnackBarCustomError errorSnack={errorSnack} setErrorSnack={setErrorSnack}/>
     </>
 
 

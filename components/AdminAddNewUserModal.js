@@ -36,7 +36,7 @@ const AdminAddNewUserModal = ({ open, setOpen, mid, fetchData,errorSnack, setErr
         setloader(true)
         try {
             const respData = await axios.post('/api/user', registerData);
-            console.log(respData);
+            // console.log(respData);
             if (respData.data.message == "This Mobile No. is Already Registered") {
                 setErrorSnack({...errorSnack,message:respData.data.message,open:true})
                 setloader(false)
@@ -74,11 +74,12 @@ const AdminAddNewUserModal = ({ open, setOpen, mid, fetchData,errorSnack, setErr
                         </Typography>
                     </Box>
                     <Container disableGutters maxWidth="xs">
+                    
                         <Box sx={{marginTop: 6, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px",p: "5px"}}>
-                            <Box>
-                                <Grid container spacing={2}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                                    <Grid container spacing={2}>
                                   {/* all textfield giving errors on build time */}
-                                    {/* <Grid item xs={12}>
+                                    <Grid item xs={12}>
                                         <TextField autoComplete="given-name" name="fullName" required fullWidth id="fullname" label="Full Name" autoFocus value={registerData.fullName} onChange={handleCollect}
                                         />
                                     </Grid>
@@ -105,7 +106,7 @@ const AdminAddNewUserModal = ({ open, setOpen, mid, fetchData,errorSnack, setErr
                                                 Choose Image
                                             </Typography>
                                         </Box>
-                                    </Grid> */}
+                                    </Grid>
                                 </Grid>
                                 <Box sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
                                 {

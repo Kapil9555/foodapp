@@ -14,7 +14,7 @@ const SnackBarCustom = ({customSnack, setCustomSnack}) => {
     
   return (
     
-          <Snackbar open={customSnack.open} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} autoHideDuration={2000} onClose={handleClose}>
+          <Snackbar open={customSnack.open} anchorOrigin={{ vertical:'bottom', horizontal: 'left' }} autoHideDuration={2000} onClose={handleClose}>
              <Alert onClose={handleClose} severity="success"  sx={{ width: '100%'}}>
                {customSnack.message}
               </Alert>

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import nodataimg from '../../../assests/nodata2.gif'
 
 import { useEffect, useState } from 'react'
+import TableSkeleton from '@/components/TableSkeleton'
 
 
 
@@ -13,7 +14,7 @@ const AdminAllAddress = () => {
 
     const [address, setAddress] = useState([]);
     const [noData , setNoData] =useState(false)
-
+    const tableHead =['S.N','Receiver Name','Address','Land Mark','PinCode','Country','Contact no.','Action']
 
 
 
@@ -71,7 +72,7 @@ const AdminAllAddress = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid container sx={{ border: "1px solid green" }}>
+            <Grid container>
                 <Grid item xs={12}>
                     <Box sx={{ p: "15px", bgcolor: "#e0e0e0" }}>
                         <Typography align='center' sx={{ fontSize: "25px", fontWeight: "900", color: "black", cursor: "pointer" }} >
@@ -101,15 +102,7 @@ const AdminAllAddress = () => {
               </Grid>
               :
               address.length == 0 ?
-                    <Box sx={{p:"10px"}}>
-                       {
-                        new Array(5).fill(1).map(()=>{
-                            return <Skeleton sx={{height:"80px"}}/>
-                              
-                        })
-                       }
-                     
-                    </Box>
+                     <TableSkeleton tableHead={tableHead}/>
                     :
                 <Table container={"true"} component={Paper}>
                     <Table aria-label="sticky table">

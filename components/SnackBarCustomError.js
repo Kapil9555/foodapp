@@ -14,7 +14,7 @@ const SnackBarCustomError = ({errorSnack, setErrorSnack}) => {
     
   return (
     
-          <Snackbar open={errorSnack.open} anchorOrigin={{ vertical: 'bottom', horizontal: 'bottom' }} autoHideDuration={2000} onClose={handleClose}>
+          <Snackbar open={errorSnack.open} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} autoHideDuration={2000} onClose={handleClose}>
              <Alert onClose={handleClose} severity="error" >
                {errorSnack.message}
               </Alert>

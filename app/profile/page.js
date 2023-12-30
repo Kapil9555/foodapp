@@ -19,7 +19,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from 'next/image';
 import { CircularProgress, IconButton, Paper, Skeleton } from '@mui/material';
 import axios from 'axios';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import ChangePassword from '@/components/ChangePassword';
 import EditProfile from '@/components/EditProfile';
 import SnackBarCustom from '@/components/SnackBarCustom';
@@ -29,6 +29,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const Profile = () => {
+    const router = useRouter()
     const [userData, setUserData] = useState([]);
     const [passOpen, setPassOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
@@ -91,7 +92,30 @@ const Profile = () => {
                     <Grid component={'box'} item lg={4.5} md={6} sm={10} xs={11} sx={{ mt: '30px' }}>
                              {
                                 loader ? 
-                                  <Skeleton sx={{height:"600px",width:"100%",mt:"-100px"}}/>
+                                <Grid container >
+                                            <Grid item xs={12} sx={{ m: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                <Skeleton variant="circular" width={100} height={100} />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Skeleton variant="rectangular" sx={{ width: '20%', height: '25px' }} />
+                                                <Skeleton variant="rectangular" sx={{ width: '100%', height: '35px', mt: '10px', borderRadius: '7px' }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} sx={{ mt: '19px' }}>
+                                                <Skeleton variant="rectangular" sx={{ width: '20%', height: '25px' }} />
+                                                <Skeleton variant="rectangular" sx={{ width: '100%', height: '35px', mt: '10px', borderRadius: '7px' }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} sx={{ mt: '19px' }}>
+                                                <Skeleton variant="rectangular" sx={{ width: '20%', height: '25px' }} />
+                                                <Skeleton variant="rectangular" sx={{ width: '100%', height: '35px', mt: '10px', borderRadius: '7px' }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: '10px' }}>
+                                                <Skeleton variant="rectangular" sx={{ width: '20%', height: '35px', borderRadius: '7px' }} />
+                                                <Skeleton variant="rectangular" sx={{ width: '20%', height: '35px', mt: '10px', borderRadius: '7px' }} />
+                                            </Grid>
+                                        </Grid>
                                :
                              <Paper elevation={3} sx={{ p: '10px' }}>
                             <Grid container >
@@ -137,7 +161,7 @@ const Profile = () => {
             </Container>
             <SnackBarCustom customSnack={customSnack}  setCustomSnack={setCustomSnack}/>
             <ChangePassword passOpen={passOpen} setPassOpen={setPassOpen}/>
-            {/* <EditProfile openEdit={openEdit} setOpenEdit={setOpenEdit} userData={userData} fetchUserDetails={fetchUserDetails} customSnack={customSnack}  setCustomSnack={setCustomSnack}/> */}
+            <EditProfile openEdit={openEdit} setOpenEdit={setOpenEdit} userData={userData} fetchUserDetails={fetchUserDetails} customSnack={customSnack}  setCustomSnack={setCustomSnack}/>
 
         </>
     )

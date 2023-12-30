@@ -12,13 +12,14 @@ import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { CircularProgress } from '@mui/material';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        AdelSocialFood
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -33,6 +34,7 @@ function Copyright(props) {
 const SignUp = () => {
   const router = useRouter();
   const [checker, setChecker] = useState(true);
+  const [loader , setLoader]= useState(false)
   const [registerData, setRegisterData] = useState({
     fullName: "",
     email: "",
@@ -60,14 +62,17 @@ const SignUp = () => {
   }, [registerData]);
 
   const handleSubmit = async () => {
-    console.log(registerData);
+    // console.log(registerData);`
+    setLoader(true)
     try {
       const respData = await axios.post('/api/user', registerData);
-      console.log(respData);
+      // console.log(respData);
       if (respData.data.message == "This Mobile No. is Already Registered") {
+        setLoader(false)
         alert(respData.data.message);
       };
       if (respData.data.message == 'User Registered Successfully') {
+        setLoader(false)
         router.push('/userlogin');
       };
     } catch (err) {
@@ -127,12 +132,19 @@ const SignUp = () => {
                 </Box>
               </Grid>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={checker} onClick={handleSubmit}>
-              Sign Up
-            </Button>
+                <Box sx={{display:'flex',justifyContent:"center",alignItems:"center"}}>
+                         {
+                            loader ? 
+                            <CircularProgress color='inherit' size={'2rem'} sx={{ mt: 3, mb: 2 }}/>
+                            :                 
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={checker} onClick={handleSubmit}>
+                              Sign Up
+                            </Button>
+                         }
+                        </Box>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="userlogin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

@@ -46,7 +46,7 @@ const EditUserDetails = ({ editUserOpen, setEditUserOpen, fetchData, setCustomSn
 
 
     useEffect(() => {
-        console.log("user Details", editUserOpen.details)
+        // console.log("user Details", editUserOpen.details)
         setInputData({ ...inputData, fullName: editUserOpen.details.fullName, mobile: editUserOpen.details.mobile, email: editUserOpen.details.email, isActive: editUserOpen.details.isActive })
     }, [editUserOpen.details])
 
@@ -81,7 +81,7 @@ const EditUserDetails = ({ editUserOpen, setEditUserOpen, fetchData, setCustomSn
 
     }
 
-    console.log("input Data", editUserOpen)
+    // console.log("input Data", editUserOpen)
 
 
     return (
@@ -96,7 +96,7 @@ const EditUserDetails = ({ editUserOpen, setEditUserOpen, fetchData, setCustomSn
                         <Box sx={{ mt: 3 }}>
                             <Grid container spacing={2} >
                             all textfield giving error on build time
-                                {/* <Grid item xs={12} >
+                                <Grid item xs={12} >
                                     <TextField name="fullName" required fullWidth value={inputData.fullName || ''} onChange={handleCollect} />
                                 </Grid>
 
@@ -110,9 +110,9 @@ const EditUserDetails = ({ editUserOpen, setEditUserOpen, fetchData, setCustomSn
 
                                 <Grid item xs={12}>
                                     <FormGroup sx={{ p: "0px", all: "unset" }}>
-                                        <FormControlLabel name='isActive' control={<Checkbox checked={inputData.isActive || false} onChange={handleCollect} />} />
+                                        <FormControlLabel name='isActive'  control={<Checkbox checked={inputData.isActive || false} onChange={handleCollect} />} />
                                     </FormGroup>
-                                </Grid> */}
+                                </Grid>
 
 
 

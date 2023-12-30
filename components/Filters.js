@@ -16,7 +16,7 @@ const Filters = ({ catData }) => {
                     <Box className="removescroll" sx={{ mt: "10px", display: "flex",overflow:"auto"}}>
                         {
                             arr.map((ele, index) => {
-                                return <Box sx={{ mb: "10px", height: { lg: "100px", md: "100px", xs: "90px", xs: "80px" }, width: { lg: "100px", md: "100px", xs: "90px", xs: "80px" }, mr: "13px", borderRadius: "13px", overflow: "hidden"}}>
+                                return <Box key={index} sx={{ mb: "10px", height: { lg: "100px", md: "100px", xs: "90px", xs: "80px" }, width: { lg: "100px", md: "100px", xs: "90px", xs: "80px" }, mr: "13px", borderRadius: "13px", overflow: "hidden"}}>
                                     <Box sx={{ width: "100%",mt:"-23px",mb:"-17px", height: { lg: "100px", md: "70px", sm: "60px", xs: "60px" } }}>
                                         <Skeleton sx={{  height: "100%", width: "100%" }} />
                                     </Box>
@@ -35,7 +35,7 @@ const Filters = ({ catData }) => {
                                 return (
                                     <Paper key={index} sx={{ zIndex: 2, cursor: "pointer", flex: '0 0 auto', mb: "10px", height: { lg: "100px", md: "100px", xs: "90px", xs: "80px" }, width: { lg: "100px", md: "100px", xs: "90px", xs: "80px" }, mr: "13px", borderRadius: "13px", overflow: "hidden", bgcolor: "white" }}>
                                         <Box sx={{ position: "relative", height: { lg: "70px", md: "70px", sm: "60px", xs: "60px" } }}>
-                                            <Image alt='img' src={burger1} style={{ height: "100%", width: "100%" }} />
+                                            <Image alt='img' src={require(`../public/uploads/${ele.image}`)} style={{ height: "100%", width: "100%" }} />
                                         </Box>
                                         <Box sx={{ height: "100%", bgcolor: "white", height: { lg: "30px", md: "30px", sm: "30px", xs: "30px" } }}>
                                             <Typography align='center' sx={{ fontSize: { lg: "15px", md: "15px", sm: "14px", xs: "12px" }, fontWeight: 600, color: "#9e9e9e" }}>{ele.name}</Typography>

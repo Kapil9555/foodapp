@@ -70,19 +70,11 @@ console.log("hello gthisdc",orderdetail)
     return (
         <>
 
-            <Modal
-                open={open}
-                disableAutoFocus
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                sx={{ border: '2px solid white' }}
-
-            >
+            <Modal open={open} disableAutoFocus onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" sx={{ border: '2px solid white' }}>
                 <Grid container sx={style}>
                     <Grid item lg={12} md={12} sm={10} xs={10}>
                         <Paper elevation={5} sx={{ borderRadius: '20px' }}>
-                            <Grid container >
+                            <Grid container>
                                 <Grid item xs={12} sx={{ p: '10px', textAlign: 'right' }}>
                                     <ClearIcon sx={{ color: '#635ac0', fontWeight: 'bold', fontSize: '29px', cursor: 'pointer' }} onClick={crossHandler} />
                                 </Grid>
@@ -100,13 +92,7 @@ console.log("hello gthisdc",orderdetail)
                                 <Grid item xs={6.1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: '20px' }}>
                                     <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
                                         <InputLabel id="demo-select-small-label">Order Status</InputLabel>
-                                        <Select
-                                            labelId="demo-select-small-label"
-                                            id="demo-select-small"
-                                            value={selectedStatus}
-                                            label="Order Status"
-                                            onChange={handleChange}
-                                        >
+                                        <Select labelId="demo-select-small-label" id="demo-select-small" value={selectedStatus} label="Order Status" onChange={handleChange}>
                                         {
                                             orderStatus.map((ele,index)=>{
                                                 return <MenuItem key={index} value={ele}>
@@ -114,8 +100,6 @@ console.log("hello gthisdc",orderdetail)
                                               </MenuItem>
                                             })
                                         }
-                                            
-                                             
                                         </Select>
                                     </FormControl>
                                 </Grid>

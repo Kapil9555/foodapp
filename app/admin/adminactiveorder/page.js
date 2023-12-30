@@ -5,7 +5,11 @@ import axios from 'axios'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import nodata2 from '../../../assests/nodata2.gif'
+import nodata from '../../../assests/nodata2.gif'
+import TableSkeleton from '@/components/TableSkeleton'
+import AdminEditActiveOrder from '@/components/AdminEditActiveOrder'
+import SnackBarCustomError from '@/components/SnackBarCustomError'
+import SnackBarCustom from '@/components/SnackBarCustom'
 
 
 
@@ -14,9 +18,11 @@ const AdminActiveOrders = () => {
     const router = useRouter();
     const param = useParams();
     const [activeOrder, setActiveOrder] = useState([]);
-    const [open, setOpen] = useState(false);
+    const [editModal, setEditModal] = useState({open:false,data:{}});
     const [noData , setNodata] = useState(false)
-
+    const [customSnack,setCustomSnack]=useState({open:false,message:""})
+    const [errorSnack, setErrorSnack] = useState({open:false,message:""})
+    const tableHead =['S.N','Receiver Name',' Order Status','To Pay','Payment Method','Address','Action']
 
 
    // function which is navigating to item list page of specefic category
@@ -56,6 +62,13 @@ const AdminActiveOrders = () => {
     //     alert(err)
     //    }
     // };
+    const handleDeleteOrder =()=>{
+        console.log("all deleted")
+    }
+
+    const handleEditdetails =async(data)=>{
+        setEditModal({open:true,data:data})
+    }
 
     useEffect(() => {
         fetchData();
@@ -78,71 +91,41 @@ const AdminActiveOrders = () => {
                         </Typography>
                     </Box>
                 </Grid>
-                <Grid item xs={12} sx={{ p: "15px" }}>
-                    <Box sx={{ display: "flex", justifyContent: "right" }}>
-                        <Button sx={{ bgcolor: "black", color: "white", '&:hover': { bgcolor: "black" }, fontSize: "14px", fontWeight: "600" }} onClick={() => { setOpen(true) }}>
-                            add new address
-                        </Button>
-                        {/* <AdminAddNewCatModal open={open} setOpen={setOpen} mid={param.adminallcategoriesdynamic} fetchData={fetchData} /> */}
-                    </Box>
-                </Grid>
                 <Grid item xs={12}>
                 {
                     noData ?
                     <Grid container sx={{}}>
                 <Grid item xs={12} sx={{ height: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                   <Box sx={{ position: "relative", height: "200px", width: "200px" }}>
-                    <Image src={nodata2} alt='no data' style={{ height: "100%", width: "100%", position: "absolute" }} />
+                    <Image src={nodata} alt='no data' style={{ height: "100%", width: "100%", position: "absolute" }} />
                   </Box>
                   <Typography sx={{fontSize:"20px",fontWeight:"800",color:"#bdbdbd"}}>No Data Found</Typography>
                 </Grid>
               </Grid>
               :
               activeOrder.length == 0 ?
-                    <Box sx={{p:"10px"}}>
-                       {
-                        new Array(5).fill(1).map(()=>{
-                            return <Skeleton sx={{height:"80px"}}/>
-                              
-                        })
-                       }
-                     
-                    </Box>
+                 <TableSkeleton tableHead={tableHead}/>
                     :
                     <Table container={"true"} component={Paper}>
                         <Table aria-label="sticky table">
-                            <TableHead  >
+                            <TableHead>
                                 <TableRow sx={{ backgroundColor: "black" }}>
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                        S.N
+                                {
+                                    tableHead.map((ele,index)=>{
+                                        return  <TableCell key={index} align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
+                                        {ele}
                                     </TableCell>
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                        Reciever Name
-                                    </TableCell>
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                        Order Status
-                                    </TableCell>
-
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                       To Pay
-                                    </TableCell>
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                      Payment Method
-                                    </TableCell>
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                       Address
-                                    </TableCell>
-
-                                    <TableCell align='center' sx={{ color: "white", fontSize: "16px", fontWeight: "900", cursor: "pointer" }}>
-                                        Action
-                                    </TableCell>
+                                    })
+                                }
+                                   
+                                     
                                 </TableRow>
                             </TableHead>
                             <TableBody>
 
                                 {
                                   activeOrder.map((ele, index) => {
-                                    console.log(ele)
+                                    {/* console.log(ele) */}
                                         return (
                                             <TableRow key={index}>
                                                 <TableCell align='center' sx={{ cursor: "pointer" }}>{index+1}</TableCell>
@@ -165,8 +148,8 @@ const AdminActiveOrders = () => {
 
                                                 <TableCell align='center' sx={{ cursor: "pointer" }}>
                                                     <Box>
-                                                        <Button variant='contained' sx={{ bgcolor: "black", "&:hover": { bgcolor: "black" }, p: "3px 0px", fontSize: "12px", mr: "10px" }}>edit</Button>
-                                                        <Button variant='contained' sx={{ bgcolor: "red", "&:hover": { bgcolor: "red" }, p: "3px 0px", fontSize: "12px" }} onClick={() => { handleDeleteCat(ele._id) }}>delete</Button>
+                                                        <Button variant='contained' sx={{ bgcolor: "black", "&:hover": { bgcolor: "black" }, p: "3px 0px", fontSize: "12px", mr: "10px" }} onClick={()=>{handleEditdetails(ele)}}>edit</Button>
+                                                        <Button variant='contained' sx={{ bgcolor: "red", "&:hover": { bgcolor: "red" }, p: "3px 0px", fontSize: "12px" }} onClick={() => { handleDeleteOrder(ele._id) }}>delete</Button>
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>
@@ -179,9 +162,10 @@ const AdminActiveOrders = () => {
                     </Table>
                 }
                 </Grid>
-
-
             </Grid>
+             <SnackBarCustom customSnack={customSnack} setCustomSnack={setCustomSnack}/>
+             <SnackBarCustomError errorSnack={errorSnack} setErrorSnack={setErrorSnack}/>
+             <AdminEditActiveOrder setCustomSnack={setCustomSnack}  setErrorSnack={setErrorSnack} editModal={editModal} setEditModal={setEditModal} fetchData={fetchData}/>
         </>
     )
 }
